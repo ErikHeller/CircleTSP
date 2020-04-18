@@ -101,8 +101,6 @@ public class ClusteredCircleTSP implements TSPClusterSolver {
                 throw new IllegalArgumentException("Global tour is empty while there are more than one cluster tours!");
         }
 
-        Tour resultTour = new Tour(globalTour);
-
         // TODO: use logging
         System.out.println("Global tour:");
         System.out.println(globalTour.toString());
@@ -176,16 +174,16 @@ public class ClusteredCircleTSP implements TSPClusterSolver {
 
             while (it.hasNext()) {
                 Point p = it.next();
-                resultTour.add(currentGlobalIndex, p);
+                globalTour.add(currentGlobalIndex, p);
                 currentGlobalIndex++;
             }
-            resultTour.remove(clusterCenter);
+            globalTour.remove(clusterCenter);
 
             // TODO: use logging
             System.out.println("Result (global) tour:");
-            System.out.println(resultTour.toString());
+            System.out.println(globalTour.toString());
         }
-        return resultTour;
+        return globalTour;
     }
 
     /**
