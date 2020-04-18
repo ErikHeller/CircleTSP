@@ -17,7 +17,7 @@ public class Display {
         System.out.println("Path taken:");
 
         if (gui)
-            frame = new GraphDraw("CircleTSP", size, size);
+            frame = new GraphDraw("CircleTSP", size, size+300);
 
         Iterator<Point> it = tour.iterator();
         Point currentPoint = it.next();

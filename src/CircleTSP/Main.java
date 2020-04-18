@@ -90,16 +90,13 @@ public class Main {
     public static void main(String[] args) throws IOException {
         // devMode(args);
 
-        Collection<Point> points = ProblemGenerator.fourCircleClusters(10);
+        Collection<Point> points = ProblemGenerator.fourCircleClusters(80);
+        TSPClusterSolver solver = new ClusteredCircleTSP();
 
-        GraphDraw gui = new GraphDraw("Points", 500, 500);
-
-        for (Point p : points)
-            gui.addNode(p);
-
-
-
-        TSPClusterSolver solver = new PathCircleTSP();
+        if (args.length > 0) {
+            String pointsFile = args[0];
+            points = TSPLIB.readPoints(pointsFile).values();
+        }
 
         double epsilon = ParameterLearner.learnEpsilon2(points, 4, solver);
         System.out.println("minPts: 4, epsilon: " + epsilon);
@@ -107,7 +104,15 @@ public class Main {
         List<Cluster> clusters = clusterer.getClusters();
         System.out.println("Number of clusters: " + clusters.size());
 
+        double time1 = System.nanoTime();
         Tour tour_cluster = solver.calculateTour(points, 4, epsilon);
-        System.out.println("Tour length: " + Distance.calculateTourLength(tour_cluster));
+        double time2 = System.nanoTime();
+
+
+        Display.displayResults(tour_cluster,
+                CircleTSP.getCenterPoint(points),
+                Distance.calculateTourLength(tour_cluster),
+                (time2 - time1) / 1000000.0,
+                true);
     }
 }

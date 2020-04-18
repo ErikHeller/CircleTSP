@@ -18,6 +18,9 @@ public class GraphDraw extends JFrame {
     private double minX = Double.POSITIVE_INFINITY;
     private double minY = Double.POSITIVE_INFINITY;
     private double maxY = Double.NEGATIVE_INFINITY;
+    private double maxLength = Double.NEGATIVE_INFINITY;
+    private double centeringX = 0;
+    private double centeringY = 0;
 
     private int width;
     private int height;
@@ -99,38 +102,54 @@ public class GraphDraw extends JFrame {
         minX = Math.min(x, minX);
         minY = Math.min(y, minY);
 
+        double length = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));
+        maxLength = Math.max(length, maxLength);
+
         setScaling();
+        setCentering();
 
         points.add(p);
         this.repaint();
     }
 
     private void setScaling() {
-        displacementX = Math.abs(minX);
-        displacementY = Math.abs(minY);
+        displacementX = -minX;
+        displacementY = -minY;
 
-        double scalingX = (width / Math.abs(maxX-minX))*0.99;
-        double scalingY = (height / Math.abs(maxY-minY))*0.99;
+        double normedDisplacementX = displacementX / (maxX-minX);
+        double normedDisplacementY = displacementY / (maxY-minY);
 
-        if (scalingX > scalingY) {
-            if (width < (scalingX * (displacementX+maxX))
-                    && height <= (scalingX * (displacementY+maxY)))
-                scaling = scalingX;
-            else
-                scaling = scalingY;
+        double heightDispl = (1-normedDisplacementY) * height;
+        double widthDispl = (1-normedDisplacementX) * width;
+
+        double windowScaling = Math.min(heightDispl, widthDispl);
+
+        scaling = windowScaling / maxLength;
+    }
+
+    private void setCentering() {
+
+        int windowCenterX = width / 2;
+        int windowCenterY = height / 2;
+
+        double sumX = 0;
+        double sumY = 0;
+
+        for (Point p : points) {
+            sumX += (p.getCoordinates()[0]+displacementX)*scaling;
+            sumY += (p.getCoordinates()[1]+displacementY)*scaling;
         }
-        else {
-            if (width < (scalingY * (displacementX+maxX))
-                    && height <= (scalingY * (displacementY+maxY)))
-                scaling = scalingY;
-            else
-                scaling = scalingX;
-        }
+
+        double guiPointsCenterX = sumX / points.size();
+        double guiPointsCenterY = sumY / points.size();
+
+        centeringX = windowCenterX - guiPointsCenterX + (0.05*width);
+        centeringY = windowCenterY - guiPointsCenterY + (0.05*height);
     }
 
     private Tuple<Integer, Integer> getGUIcoords(Point p) {
-        int x = (int) Math.round((p.getCoordinates()[0]+displacementX)*scaling) + 50;
-        int y = (int) Math.round((p.getCoordinates()[1]+displacementY)*scaling) + 50;
+        int x = (int) Math.round((p.getCoordinates()[0]+displacementX)*scaling) + (int)centeringX;
+        int y = (int) Math.round((p.getCoordinates()[1]+displacementY)*scaling) + (int)centeringY;
         return new Tuple<>(x, y);
     }
 
