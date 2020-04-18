@@ -125,6 +125,24 @@ public class GraphDraw extends JFrame {
         double windowScaling = Math.min(heightDispl, widthDispl);
 
         scaling = windowScaling / maxLength;
+
+        // Hotfix for scaling
+        double _maxX = Double.NEGATIVE_INFINITY;
+        double _maxY = Double.NEGATIVE_INFINITY;
+        double _minX = Double.POSITIVE_INFINITY;
+        double _minY = Double.POSITIVE_INFINITY;
+
+        for (Point p : points) {
+            _maxX = Math.max(_maxX, (p.getCoordinates()[0]+displacementX)*scaling);
+            _minX = Math.min(_minX, (p.getCoordinates()[0]+displacementX)*scaling);
+            _maxY = Math.max(_maxY, (p.getCoordinates()[1]+displacementY)*scaling);
+            _minY = Math.min(_minY, (p.getCoordinates()[1]+displacementY)*scaling);
+        }
+
+        double _scalingX = width / (_maxX - _minX);
+        double _scalingY = height / (_maxY - _minY);
+
+        scaling = scaling * Math.min(_scalingX, _scalingY);
     }
 
     private void setCentering() {
