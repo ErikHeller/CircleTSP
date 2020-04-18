@@ -103,6 +103,10 @@ public class ClusteredCircleTSP implements TSPClusterSolver {
 
         Tour resultTour = new Tour(globalTour);
 
+        // TODO: use logging
+        System.out.println("Global tour:");
+        System.out.println(globalTour.toString());
+
         for (int i = 0; i < clusterTours.size(); i++) {
             // a) Find goal points g1 and g2
             Point clusterCenter = clusterCenters.get(i);
@@ -110,8 +114,17 @@ public class ClusteredCircleTSP implements TSPClusterSolver {
             // Index of clusterCenter in the global globalTour
             int centerIndex = globalTour.indexOf(clusterCenter);
 
+            // TODO: use logging
+            System.out.println("=== Cluster " + (i+1) + " of " + clusterTours.size() + " ===");
+            System.out.println("Current centerpoint: " + clusterCenter.getId());
+            System.out.println("Local tour:");
+            System.out.println(clusterTour.toString());
+
             Point g1 = globalTour.getPreviousPoint(centerIndex);
             Point g2 = globalTour.getNextPoint(centerIndex);
+
+            // TODO: use logging
+            System.out.println("Goal points: " + g1.getId() + " " + g2.getId());
 
             Tuple<Point, Point> currentEntryPoints = null;
             if (entryPoints != null)
@@ -142,6 +155,9 @@ public class ClusteredCircleTSP implements TSPClusterSolver {
                 e2 = temp;
             }
 
+            // TODO: use logging
+            System.out.println("Entry points: " + e1.getId() + " " + e2.getId());
+
             // e) Connect entry points with goal points and merge cluster tours with global tour
             int e1Index = clusterTour.indexOf(e1);
             int e2Index = clusterTour.indexOf(e2);
@@ -164,6 +180,10 @@ public class ClusteredCircleTSP implements TSPClusterSolver {
                 currentGlobalIndex++;
             }
             resultTour.remove(clusterCenter);
+
+            // TODO: use logging
+            System.out.println("Result (global) tour:");
+            System.out.println(resultTour.toString());
         }
         return resultTour;
     }
