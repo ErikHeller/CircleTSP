@@ -15,32 +15,24 @@ public class Display {
         // gui = gui && (tour.size() < 25);
 
         System.out.println("Path taken:");
-
-        if (gui)
-            frame = new GraphDraw("CircleTSP", size, size+300);
-
-        Iterator<Point> it = tour.iterator();
-        Point currentPoint = it.next();
-        Point nextPoint;
-        if (gui)
-            frame.addNode(currentPoint);
-
-        while (it.hasNext()) {
-            nextPoint = it.next();
-
-            if (gui) {
-                frame.addNode(nextPoint);
-                frame.addEdge(currentPoint, nextPoint);
-            }
-            System.out.print(currentPoint.getId() + " ");
-            currentPoint = nextPoint;
-        }
-        nextPoint = tour.get(0);
-        if (gui)
-            frame.addEdge(currentPoint, nextPoint);
-        System.out.print(currentPoint.getId() + " ");
+        System.out.println(tour.toString());
 
         if (gui) {
+            frame = new GraphDraw("CircleTSP", size, size+300);
+
+            Iterator<Point> it = tour.iterator();
+            Point currentPoint = it.next();
+            Point nextPoint;
+            frame.addNode(currentPoint);
+
+            while (it.hasNext()) {
+                nextPoint = it.next();
+                frame.addNode(nextPoint);
+                frame.addEdge(currentPoint, nextPoint);
+                currentPoint = nextPoint;
+            }
+            nextPoint = tour.get(0);
+            frame.addEdge(currentPoint, nextPoint);
             frame.addNode(centerPoint);
         }
 

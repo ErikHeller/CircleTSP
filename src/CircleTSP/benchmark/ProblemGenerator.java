@@ -141,7 +141,7 @@ public class ProblemGenerator {
                 double newX = p.getCoordinates()[0] + center.getCoordinates()[0];
                 double newY = p.getCoordinates()[1] + center.getCoordinates()[1];
 
-                Point cp = new Point("c" + i + "." + j, new double[]{newX, newY});
+                Point cp = new Point(center.getId() + j, new double[]{newX, newY});
                 maxDistance = Math.max(maxDistance,
                         Distance.euclidianDistance(new double[] {0.0, 0.0}, cp.getCoordinates()));
 
@@ -175,10 +175,10 @@ public class ProblemGenerator {
             r[i] = 1;
 
         List<Point> centers = new ArrayList<>();
-        centers.add(new Point("N", new double[]{0.0, 5.0}));
-        centers.add(new Point("S", new double[]{0.0, -5.0}));
-        centers.add(new Point("W", new double[]{5.0, 0.0}));
-        centers.add(new Point("O", new double[]{-5.0, 0.0}));
+        centers.add(new Point("A", new double[]{0.0, 5.0}));
+        centers.add(new Point("B", new double[]{0.0, -5.0}));
+        centers.add(new Point("C", new double[]{5.0, 0.0}));
+        centers.add(new Point("D", new double[]{-5.0, 0.0}));
 
         List<Collection<Point>> clusters = new ArrayList<>();
         for (int i = 0; i<4; i++)
@@ -196,10 +196,10 @@ public class ProblemGenerator {
             r[i] = 1;
 
         List<Point> centers = new ArrayList<>();
-        centers.add(new Point("N", new double[]{0.0, 5.0}));
-        centers.add(new Point("S", new double[]{0.0, -5.0}));
-        centers.add(new Point("W", new double[]{5.0, 0.0}));
-        centers.add(new Point("O", new double[]{-5.0, 0.0}));
+        centers.add(new Point("A", new double[]{0.0, 5.0}));
+        centers.add(new Point("B", new double[]{0.0, -5.0}));
+        centers.add(new Point("C", new double[]{5.0, 0.0}));
+        centers.add(new Point("D", new double[]{-5.0, 0.0}));
 
         List<Collection<Point>> clusters = new ArrayList<>();
         for (int i = 0; i<4; i++)
@@ -217,10 +217,10 @@ public class ProblemGenerator {
             r[i] = 1;
 
         List<Point> centers = new ArrayList<>();
-        centers.add(new Point("N", new double[]{0.0, 5.0}));
-        centers.add(new Point("S", new double[]{0.0, -5.0}));
-        centers.add(new Point("W", new double[]{5.0, 0.0}));
-        centers.add(new Point("O", new double[]{-5.0, 0.0}));
+        centers.add(new Point("A", new double[]{0.0, 5.0}));
+        centers.add(new Point("B", new double[]{0.0, -5.0}));
+        centers.add(new Point("C", new double[]{5.0, 0.0}));
+        centers.add(new Point("D", new double[]{-5.0, 0.0}));
 
         List<Collection<Point>> clusters = new ArrayList<>();
         clusters.add(randomLinear(pointsPerCluster + r[0],

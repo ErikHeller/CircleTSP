@@ -1,7 +1,9 @@
 package CircleTSP.entities;
 
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.StringJoiner;
 
 public class Tour extends LinkedList<Point> {
 
@@ -91,5 +93,27 @@ public class Tour extends LinkedList<Point> {
 
     public TourIterator tourIterator(int startIndex, boolean reversedDirection) {
         return new TourIterator(this, startIndex, reversedDirection);
+    }
+
+    @Override
+    public String toString() {
+        return this.toString(" ");
+    }
+
+    public String toString(String delimiter) {
+        StringJoiner sj = new StringJoiner(delimiter);
+
+        Iterator<Point> it = this.iterator();
+        Point currentPoint = it.next();
+        Point nextPoint;
+
+        while (it.hasNext()) {
+            nextPoint = it.next();
+            sj.add(currentPoint.getId());
+            currentPoint = nextPoint;
+        }
+        sj.add(currentPoint.getId());
+
+        return sj.toString();
     }
 }

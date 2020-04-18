@@ -24,6 +24,10 @@ public class ClusteredCircleTSP implements TSPClusterSolver {
      */
     public Tour calculateTour(Collection<Point> pointSet,
                                      int minPts, double epsilon) {
+
+        Deque<String> clusterCenterNames = new ArrayDeque<>(
+                Arrays.asList("a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z".split(",")));
+
         // 1. Find clusters
         DBSCAN dbscan = new DBSCAN(pointSet, minPts, epsilon);
         List<Cluster> clusters = dbscan.getClusters();
@@ -43,7 +47,8 @@ public class ClusteredCircleTSP implements TSPClusterSolver {
             clusterTours.add(clusterTour);
 
             // 3. Replace points of cluster in pointSet with center point of cluster
-            Point clusterCenter = CircleTSP.getCenterPoint(clusterPoints);
+            Point clusterCenter = new Point(clusterCenterNames.removeFirst(),
+                    CircleTSP.getCenterPoint(clusterPoints).getCoordinates());
             clusterCenters.add(clusterCenter);
 
             clusterCentersAndNoise.removeAll(clusterPoints);
