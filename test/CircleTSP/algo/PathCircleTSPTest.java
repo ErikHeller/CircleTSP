@@ -37,14 +37,4 @@ class PathCircleTSPTest {
             pointSet.add(new Point("" + i, coords));
         }
     }
-
-    @Test
-    void findEntryPoints() {
-        PCA pca = new PCA(pointSet);
-        RealVector pc = pca.getEigenvector(0);
-        Tuple<Point, Point> entryPoints = PathCircleTSP.findEntryPoints(pointSet, pc);
-
-        assertTrue(entryPoints.getFirst().equals(start) || entryPoints.getSecond().equals(start));
-        assertTrue(entryPoints.getFirst().equals(end) || entryPoints.getSecond().equals(end));
-    }
 }

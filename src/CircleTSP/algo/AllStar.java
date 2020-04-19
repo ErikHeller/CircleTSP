@@ -1,7 +1,10 @@
 package CircleTSP.algo;
 
 import CircleTSP.entities.Point;
+import CircleTSP.entities.Tuple;
 import CircleTSP.util.Distance;
+import org.apache.commons.math3.linear.ArrayRealVector;
+import org.apache.commons.math3.linear.RealVector;
 
 import java.util.*;
 
@@ -178,5 +181,34 @@ public class AllStar {
             dp_temp = dp_temp.predecessor;
         }
         return path;
+    }
+
+    /**
+     * Find entry points for AllStar path search using PCA. For an elliptical cluster, the first principal component
+     * will be extracted and all points will be projected onto this principal component. The values of the projected
+     * points will be sorted in ascending order and the first and last points will be extracted as entry points,
+     * as well as start and end points, for AllStar.
+     * @param points Collection of points (cluster) for which the entry points shall be determined.
+     * @param pc First prinicpal component of the PCA for a cluster.
+     * @return Entry points for a cluster.
+     */
+    static Tuple<Point, Point> findEntryPoints(Collection<Point> points, RealVector pc) {
+        // Red-Black tree as implemented in TreeMap is more efficient than skip list
+        SortedMap<Double, Point> projectionMap = new TreeMap<>();
+
+        // Project all points from cluster to the first principal component
+        for (Point p : points) {
+            RealVector v = new ArrayRealVector(p.getCoordinates());
+            double projection = PCA.getProjection(v, pc);
+            projectionMap.put(projection, p);
+        }
+
+        Point start = projectionMap.get(projectionMap.firstKey());
+        Point goal = projectionMap.get(projectionMap.lastKey());
+
+        assert(points.contains(start));
+        assert(points.contains(goal));
+
+        return new Tuple<>(start, goal);
     }
 }

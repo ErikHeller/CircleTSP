@@ -1,7 +1,9 @@
 package CircleTSP.algo;
 
 import CircleTSP.entities.Point;
+import CircleTSP.entities.Tuple;
 import CircleTSP.util.Distance;
+import org.apache.commons.math3.linear.RealVector;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -38,7 +40,8 @@ class AllStarTest {
         // r2 = 0;
 
         for (int i = 0; i< n-2; i++) {
-            double[] coords = new double[] {1+i+(r1*32), 1+i+(r2*32)};
+            // double[] coords = new double[] {1+i+(r1*32), 1+i+(r2*32)};
+            double[] coords = new double[] {1+i+(r1*0.5), 1+i+(r2*0.5)};
             pointSet.add(new Point("" + i, coords));
         }
     }
@@ -96,5 +99,15 @@ class AllStarTest {
         }
         System.out.println(" " + path2.get(path.size()-1));
         System.out.println("Length of path: " + distance);
+    }
+
+    @Test
+    void findEntryPoints() {
+        PCA pca = new PCA(pointSet);
+        RealVector pc = pca.getEigenvector(0);
+        Tuple<Point, Point> entryPoints = AllStar.findEntryPoints(pointSet, pc);
+
+        assertTrue(entryPoints.getFirst().equals(start) || entryPoints.getSecond().equals(start));
+        assertTrue(entryPoints.getFirst().equals(end) || entryPoints.getSecond().equals(end));
     }
 }
