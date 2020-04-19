@@ -25,8 +25,15 @@ public class ClusteredCircleTSP implements TSPClusterSolver {
     public Tour calculateTour(Collection<Point> pointSet,
                                      int minPts, double epsilon) {
 
-        Deque<String> clusterCenterNames = new ArrayDeque<>(
-                Arrays.asList("a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z".split(",")));
+        // Create names for cluster centers
+        Deque<String> clusterCenterNames = new ArrayDeque<>();
+        for (char t = 'a'; t <= 'z'; t++)
+            clusterCenterNames.add(""+t);
+        for (char t1 = 'a'; t1 <= 'z'; t1++) {
+            for (char t2 = 'a'; t2 <= 'z'; t2++) {
+                clusterCenterNames.add("" + t1 + t2);
+            }
+        }
 
         // 1. Find clusters
         DBSCAN dbscan = new DBSCAN(pointSet, minPts, epsilon);

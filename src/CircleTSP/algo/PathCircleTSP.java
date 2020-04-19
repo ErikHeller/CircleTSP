@@ -31,6 +31,16 @@ public class PathCircleTSP implements TSPClusterSolver {
     public Tour calculateTour(Collection<Point> pointSet,
                                      int minPts, double epsilon) {
 
+        // Create names for cluster centers
+        Deque<String> clusterCenterNames = new ArrayDeque<>();
+        for (char t = 'a'; t <= 'z'; t++)
+            clusterCenterNames.add(""+t);
+        for (char t1 = 'a'; t1 <= 'z'; t1++) {
+            for (char t2 = 'a'; t2 <= 'z'; t2++) {
+                clusterCenterNames.add("" + t1 + t2);
+            }
+        }
+
         DBSCAN clusterer = new DBSCAN(pointSet, minPts, epsilon);
         List<Cluster> clusters = clusterer.getClusters();
         clusters.removeIf(cluster -> cluster.getPoints().size() <= 2);
@@ -54,7 +64,9 @@ public class PathCircleTSP implements TSPClusterSolver {
                 clusterTours.add(new Tour(path));
                 Point e1 = path.get(0);
                 Point e2 = path.get(path.size()-1);
-                Point centerPoint = CircleTSP.averageCenter(clusterPoints);
+                Point centerPoint = new Point(clusterCenterNames.removeFirst(),
+                        CircleTSP.getCenterPoint(clusterPoints).getCoordinates());
+
                 centerPoints.add(centerPoint);
                 entryPoints.add(new Tuple<>(e1, e2));
 
@@ -64,7 +76,8 @@ public class PathCircleTSP implements TSPClusterSolver {
             else {
                 // Call CircleTSP for big & circular clusters
                 clusterTours.add(CircleTSP.calculateTour(clusterPoints));
-                Point centerPoint = CircleTSP.getCenterPoint(clusterPoints);
+                Point centerPoint = new Point(clusterCenterNames.removeFirst(),
+                        CircleTSP.getCenterPoint(clusterPoints).getCoordinates());
                 centerPoints.add(centerPoint);
                 entryPoints.add(null);
 
