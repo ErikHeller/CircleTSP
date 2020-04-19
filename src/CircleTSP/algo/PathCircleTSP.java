@@ -1,6 +1,7 @@
 package CircleTSP.algo;
 
 import CircleTSP.entities.*;
+import CircleTSP.util.Distance;
 import org.apache.commons.math3.linear.RealVector;
 import org.apache.commons.math3.linear.ArrayRealVector;
 
@@ -53,37 +54,43 @@ public class PathCircleTSP implements TSPClusterSolver {
 
         for (Cluster cluster : clusters) {
             Collection<Point> clusterPoints = cluster.getPoints();
-            PCA pca = new PCA(clusterPoints);
-            boolean ellipsoid = isEllipsoid(pca);
 
-            if (ellipsoid) {
-                // Call LinearPath for ellipsoid clusters
-                RealVector pc = pca.getEigenvector(0);
+            // Calculate tour with linear Path
+            List<Point> path = LinearPath.findPath(clusterPoints);
+            Tour linearTour = new Tour(path);
+            double linearTourLength = Distance.calculateTourLength(linearTour);
+
+            // Calculate tour with CircleTSP
+            Tour circleTour = CircleTSP.calculateTour(clusterPoints);
+            double circleTourLength = Distance.calculateTourLength(circleTour);
+
+            Tour candidateTour;
+            Tuple<Point, Point> localEntryPoints;
+
+            // Use subtour with lower costs
+            if (linearTourLength < circleTourLength) {
                 // TODO: Find goal points
-                List<Point> path = LinearPath.findPath(clusterPoints, pc);
-                clusterTours.add(new Tour(path));
+                candidateTour = linearTour;
                 Point e1 = path.get(0);
                 Point e2 = path.get(path.size()-1);
-                Point centerPoint = new Point(clusterCenterNames.removeFirst(),
-                        CircleTSP.getCenterPoint(clusterPoints).getCoordinates());
-
-                centerPoints.add(centerPoint);
-                entryPoints.add(new Tuple<>(e1, e2));
-
-                clusterCentersAndNoise.removeAll(clusterPoints);
-                clusterCentersAndNoise.add(centerPoint);
+                localEntryPoints = new Tuple<>(e1, e2);
+            } else {
+                candidateTour = circleTour;
+                // Entry points have to be calculated later using an entry point heuristic
+                localEntryPoints = null;
             }
-            else {
-                // Call CircleTSP for big & circular clusters
-                clusterTours.add(CircleTSP.calculateTour(clusterPoints));
-                Point centerPoint = new Point(clusterCenterNames.removeFirst(),
-                        CircleTSP.getCenterPoint(clusterPoints).getCoordinates());
-                centerPoints.add(centerPoint);
-                entryPoints.add(null);
 
-                clusterCentersAndNoise.removeAll(clusterPoints);
-                clusterCentersAndNoise.add(centerPoint);
-            }
+            // Add better tour to localTours (clusterTours) and add fitting entrypoints
+            clusterTours.add(candidateTour);
+            Point centerPoint = new Point(clusterCenterNames.removeFirst(),
+                    CircleTSP.getCenterPoint(clusterPoints).getCoordinates());
+            centerPoints.add(centerPoint);
+
+            entryPoints.add(localEntryPoints);
+
+            // Remove points of sub tour from V' and add cluster center
+            clusterCentersAndNoise.removeAll(clusterPoints);
+            clusterCentersAndNoise.add(centerPoint);
         }
 
         Tour globalTour = CircleTSP.calculateTour(clusterCentersAndNoise);
