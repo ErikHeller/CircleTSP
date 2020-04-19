@@ -17,6 +17,16 @@ public class Distance {
                 + Math.pow(p1[1] - p2[1], 2));
     }
 
+    public static double calculatePathLength(List<Point> path) {
+        double tourLength = 0;
+        for (int i = 0; i < path.size()-1; i++) {
+            Point currentPoint = path.get(i);
+            Point nextPoint = path.get(i+1);
+            tourLength += euclidianDistance(currentPoint.getCoordinates(), nextPoint.getCoordinates());
+        }
+        return tourLength;
+    }
+
     public static double calculateTourLength(Tour tour) {
         double tourLength = 0;
         for (int i = 0; i < tour.size()-1; i++) {

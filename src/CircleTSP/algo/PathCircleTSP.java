@@ -58,7 +58,7 @@ public class PathCircleTSP implements TSPClusterSolver {
             // Calculate tour with linear Path
             List<Point> path = LinearPath.findPath(clusterPoints);
             Tour linearTour = new Tour(path);
-            double linearTourLength = Distance.calculateTourLength(linearTour);
+            double linearPathLength = Distance.calculatePathLength(path);
 
             // Calculate tour with CircleTSP
             Tour circleTour = CircleTSP.calculateTour(clusterPoints);
@@ -68,7 +68,7 @@ public class PathCircleTSP implements TSPClusterSolver {
             Tuple<Point, Point> localEntryPoints;
 
             // Use subtour with lower costs
-            if (linearTourLength < circleTourLength) {
+            if (linearPathLength < circleTourLength) {
                 // TODO: Find goal points
                 candidateTour = linearTour;
                 Point e1 = path.get(0);
