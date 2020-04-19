@@ -7,7 +7,7 @@ import org.apache.commons.math3.linear.ArrayRealVector;
 
 import java.util.*;
 
-public class PathCircleTSP implements TSPClusterSolver {
+public class PathCircleTSP extends TSPClusterSolver {
 
     // TODO: Find better value or make variable
     private static final double DELTA = 0.382;
@@ -55,7 +55,7 @@ public class PathCircleTSP implements TSPClusterSolver {
         for (Cluster cluster : clusters) {
             Collection<Point> clusterPoints = cluster.getPoints();
 
-            // Calculate tour with linear Path
+            // Calculate tour with LinearPath
             List<Point> path = LinearPath.findPath(clusterPoints);
             Tour linearTour = new Tour(path);
             double linearPathLength = Distance.calculatePathLength(path);
@@ -93,10 +93,13 @@ public class PathCircleTSP implements TSPClusterSolver {
             clusterCentersAndNoise.add(centerPoint);
         }
 
+        // Calculate global tour from noise points and cluster centers (V')
         Tour globalTour = CircleTSP.calculateTour(clusterCentersAndNoise);
 
+        // Merge local cluster tours with global tour using the IntersectingEdges heuristic
+        EntrypointHeuristic heuristic = new IntersectingEdges();
         return ClusteredCircleTSP.mergeTours(globalTour, CircleTSP.getCenterPoint(clusterCentersAndNoise),
-                clusterTours, centerPoints, entryPoints);
+                clusterTours, centerPoints, entryPoints, heuristic);
     }
 
     /**
