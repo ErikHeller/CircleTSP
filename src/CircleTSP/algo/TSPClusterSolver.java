@@ -1,5 +1,9 @@
-package CircleTSP.entities;
+package CircleTSP.algo;
 
+import CircleTSP.entities.Point;
+import CircleTSP.entities.Tour;
+import CircleTSP.entities.TourIterator;
+import CircleTSP.entities.Tuple;
 import CircleTSP.util.Distance;
 
 import java.util.Collection;
@@ -33,8 +37,8 @@ public abstract class TSPClusterSolver implements TSPSolver {
      * with the globalTour.
      */
     protected static Tour mergeTours(Tour globalTour, Point globalCenter,
-                           List<Tour> clusterTours, List<Point> clusterCenters,
-                           List<Tuple<Point, Point>> entryPoints, EntrypointHeuristic entrypointHeuristic) {
+                                     List<Tour> clusterTours, List<Point> clusterCenters,
+                                     List<Tuple<Point, Point>> entryPoints, EntrypointHeuristic entrypointHeuristic) {
 
         if (clusterTours.size() != clusterCenters.size())
             throw new IllegalArgumentException("The number of clusters is not consistent between clusterTours" +

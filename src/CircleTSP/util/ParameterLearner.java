@@ -1,7 +1,7 @@
 package CircleTSP.util;
 
 import CircleTSP.algo.DBSCAN;
-import CircleTSP.entities.TSPClusterSolver;
+import CircleTSP.algo.TSPClusterSolver;
 import CircleTSP.entities.Cluster;
 import CircleTSP.entities.Point;
 import CircleTSP.entities.Tour;

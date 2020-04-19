@@ -1,4 +1,8 @@
-package CircleTSP.entities;
+package CircleTSP.algo;
+
+import CircleTSP.entities.Point;
+import CircleTSP.entities.Tour;
+import CircleTSP.entities.Tuple;
 
 public interface EntrypointHeuristic {
 

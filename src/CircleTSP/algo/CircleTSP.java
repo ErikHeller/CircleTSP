@@ -1,7 +1,6 @@
 package CircleTSP.algo;
 
 import CircleTSP.entities.Point;
-import CircleTSP.entities.TSPSolver;
 import CircleTSP.entities.Tour;
 
 import java.util.*;

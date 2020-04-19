@@ -1,4 +1,4 @@
-package CircleTSP.entities;
+package CircleTSP.algo;
 
 import CircleTSP.algo.CircleTSP;
 
