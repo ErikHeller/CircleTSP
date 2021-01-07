@@ -1,5 +1,6 @@
-package CircleTSP.algo;
+package CircleTSP.algo.path;
 
+import CircleTSP.algo.cluster.PCA;
 import CircleTSP.entities.Point;
 import org.apache.commons.math3.linear.ArrayRealVector;
 import org.apache.commons.math3.linear.RealVector;

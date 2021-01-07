@@ -1,5 +1,6 @@
-package CircleTSP.algo;
+package CircleTSP.algo.solvers;
 
+import CircleTSP.algo.estimators.EntrypointHeuristic;
 import CircleTSP.entities.Point;
 import CircleTSP.entities.Tour;
 import CircleTSP.entities.TourIterator;

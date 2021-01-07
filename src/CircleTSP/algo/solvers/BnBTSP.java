@@ -1,4 +1,4 @@
-package CircleTSP.algo;
+package CircleTSP.algo.solvers;
 // Java program to solve Traveling Salesman Problem
 // using Branch and Bound.
 // https://www.geeksforgeeks.org/traveling-salesman-problem-using-branch-and-bound-2/

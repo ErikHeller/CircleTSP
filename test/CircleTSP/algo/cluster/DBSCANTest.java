@@ -1,13 +1,12 @@
-package CircleTSP.algo;
+package CircleTSP.algo.cluster;
 
+import CircleTSP.algo.cluster.DBSCAN;
 import CircleTSP.entities.Point;
 import CircleTSP.entities.Cluster;
 import org.apache.commons.math3.ml.clustering.DBSCANClusterer;
 import org.junit.jupiter.api.Test;
 
 import java.util.*;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class DBSCANTest {
 

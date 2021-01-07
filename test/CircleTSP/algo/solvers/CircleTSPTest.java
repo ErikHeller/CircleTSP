@@ -1,5 +1,6 @@
-package CircleTSP.algo;
+package CircleTSP.algo.solvers;
 
+import CircleTSP.algo.solvers.CircleTSP;
 import CircleTSP.entities.Point;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

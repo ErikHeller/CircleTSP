@@ -1,5 +1,8 @@
-package CircleTSP.algo;
+package CircleTSP.algo.solvers;
 
+import CircleTSP.algo.estimators.AverageCenter;
+import CircleTSP.algo.estimators.CenterpointEstimator;
+import CircleTSP.algo.Sorting;
 import CircleTSP.entities.Point;
 import CircleTSP.entities.Tour;
 
@@ -85,7 +88,7 @@ public class CircleTSP implements TSPSolver {
     }
 
     public static Point getCenterPoint(Collection<Point> points) {
-        CenterpointEstimator centerEstimator = new AverageCenterEstimator();
+        CenterpointEstimator centerEstimator = new AverageCenter();
         return centerEstimator.estimateCenter(points);
     }
 }

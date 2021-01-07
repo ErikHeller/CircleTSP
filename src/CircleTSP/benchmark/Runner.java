@@ -1,6 +1,7 @@
 package CircleTSP.benchmark;
 
-import CircleTSP.algo.*;
+import CircleTSP.algo.cluster.DBSCAN;
+import CircleTSP.algo.solvers.*;
 import CircleTSP.entities.*;
 import CircleTSP.util.Distance;
 import CircleTSP.util.ParameterLearner;

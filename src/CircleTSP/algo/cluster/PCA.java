@@ -1,5 +1,7 @@
-package CircleTSP.algo;
+package CircleTSP.algo.cluster;
 
+import CircleTSP.algo.estimators.AverageCenter;
+import CircleTSP.algo.estimators.CenterpointEstimator;
 import CircleTSP.entities.Point;
 import org.apache.commons.math3.linear.EigenDecomposition;
 import org.apache.commons.math3.linear.MatrixUtils;
@@ -71,7 +73,7 @@ public class PCA {
         // Power iteration would be a faster PCA method
 
         // Get mean average for normalization
-        CenterpointEstimator centerEstimator = new AverageCenterEstimator();
+        CenterpointEstimator centerEstimator = new AverageCenter();
         Point mean = centerEstimator.estimateCenter(points);
 
         int numPoints = points.size();

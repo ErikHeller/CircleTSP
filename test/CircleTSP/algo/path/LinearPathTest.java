@@ -1,5 +1,6 @@
-package CircleTSP.algo;
+package CircleTSP.algo.path;
 
+import CircleTSP.algo.path.LinearPath;
 import CircleTSP.entities.Point;
 import CircleTSP.util.Distance;
 import org.junit.jupiter.api.BeforeAll;

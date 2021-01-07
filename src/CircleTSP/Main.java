@@ -1,10 +1,10 @@
 package CircleTSP;
 
-import CircleTSP.algo.*;
+import CircleTSP.algo.cluster.DBSCAN;
+import CircleTSP.algo.solvers.*;
 import CircleTSP.benchmark.ProblemGenerator;
 import CircleTSP.entities.Cluster;
 import CircleTSP.entities.Point;
-import CircleTSP.algo.TSPClusterSolver;
 import CircleTSP.entities.Tour;
 import CircleTSP.gui.Display;
 import CircleTSP.util.Distance;

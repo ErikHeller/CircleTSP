@@ -1,10 +1,10 @@
-package CircleTSP.algo;
+package CircleTSP.algo.estimators;
 
 import CircleTSP.entities.Point;
 
 import java.util.Collection;
 
-public class AverageCenterEstimator implements CenterpointEstimator {
+public class AverageCenter implements CenterpointEstimator {
 
     /**
      * Find a center point for a collection of points, by calculating the mean average of the coordinates of all points.

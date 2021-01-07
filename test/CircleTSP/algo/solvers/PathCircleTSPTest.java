@@ -1,4 +1,4 @@
-package CircleTSP.algo;
+package CircleTSP.algo.solvers;
 
 import CircleTSP.entities.Point;
 import CircleTSP.entities.Tuple;

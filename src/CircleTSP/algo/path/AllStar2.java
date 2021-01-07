@@ -1,29 +1,17 @@
-package CircleTSP.algo;
+package CircleTSP.algo.path;
 
 import CircleTSP.entities.Point;
-import CircleTSP.entities.Tuple;
 import CircleTSP.util.Distance;
-import org.apache.commons.math3.linear.ArrayRealVector;
-import org.apache.commons.math3.linear.RealVector;
 
 import java.util.*;
 
 /**
- * AllStar is an adaptation of A* calculating an optimal path that includes all
- * points in a set, given a set of points, a start point and an end point.
- * Solving this problem is NP-complete (see Travelling Salesman Problem)
- * and therefore may have exponential time complexity in the worst-case
- * for finding the optimal solution.
- * To avoid this worst-case, AllStar uses (similar to A*) an euclidean distance
- * heuristic to the goal point for the distance estimation, additionally to the
- * length of the already traversed path.
- * This can reduce the required time drastically for clusters with
- * "long" and "thin" shape.
+ * Variant of the AllStar algorithm that is closer to the A* algorithm and formulates its modifications
+ * to A* as a heuristic function.
  *
- *
- * Created by Erik Heller on 03.10.2019.
+ * Created by Erik Heller on 22.10.2019.
  */
-public class AllStar {
+public class AllStar2 {
 
     private static class DistancePoint implements Comparable {
         Point point;
@@ -75,8 +63,12 @@ public class AllStar {
         }
     }
 
-    private static double f(DistancePoint current, DistancePoint next, Point goal) {
-        return g(current, next) + 0.99 * h(next, goal);
+    private static double f(DistancePoint current, DistancePoint next, Point goal, boolean covered) {
+        double h2Value = h2(next, goal, covered);
+        if (Double.isInfinite(h2Value))
+            return Double.POSITIVE_INFINITY;
+        else
+            return g(current, next) + 0.99 * h1(next, goal) * h2Value;
     }
 
     private static double g(DistancePoint current, DistancePoint next) {
@@ -89,8 +81,24 @@ public class AllStar {
         return distance;
     }
 
-    private static double h(DistancePoint p, Point goal) {
+    private static double h1(DistancePoint p, Point goal) {
         return Distance.euclidianDistance(p.point, goal);
+    }
+
+    private static double h2(DistancePoint p, Point goal, boolean covered) {
+        boolean isGoal = p.point.equals(goal);
+        if (isGoal) {
+            if (covered)
+                return 0;
+            else
+                return Double.POSITIVE_INFINITY;
+        }
+        else
+            return 1;
+    }
+
+    private static boolean isCovered(List<Point> path, Set<DistancePoint> pointSet, Point goal) {
+        return (path.size() == pointSet.size()-1) && !path.contains(goal);
     }
 
     private static void updateFrontier(PriorityQueue<DistancePoint> frontier,
@@ -106,24 +114,13 @@ public class AllStar {
             dp_temp = dp_temp.predecessor;
         }
 
-
-        // Return frontier containing the goal node if all previous nodes have been visited
-        if (path.size() == pointSet.size()-1) {
-            if (!path.contains(goal)) {
-                DistancePoint goal_dp = new DistancePoint(goal);
-                goal_dp.predecessor = current;
-                goal_dp.tourLength = g(current, goal_dp);
-                goal_dp.heuristicDistance = f(current, goal_dp, goal);
-                frontier.add(goal_dp);
-                return;
-            }
-        }
+        boolean covered = isCovered(path, pointSet, goal);
 
         for (DistancePoint next : pointSet) {
-            if (!next.point.equals(goal) && !path.contains(next.point)) {
+            if (!path.contains(next.point)) {
                 if (frontier.contains(next)) {
                     // Update point if costs using current route is lower than previous route to this point
-                    double newDistance = f(current, next, goal);
+                    double newDistance = f(current, next, goal, covered);
                     if (newDistance <= next.heuristicDistance) {
                         frontier.remove(next);
                         next.predecessor = current;
@@ -135,7 +132,7 @@ public class AllStar {
                     // Add a new point to frontier
                     next.predecessor = current;
                     next.tourLength = g(current, next);
-                    next.heuristicDistance = f(current, next, goal);
+                    next.heuristicDistance = f(current, next, goal, covered);
                     frontier.add(next);
                 }
             }
@@ -181,34 +178,5 @@ public class AllStar {
             dp_temp = dp_temp.predecessor;
         }
         return path;
-    }
-
-    /**
-     * Find entry points for AllStar path search using PCA. For an elliptical cluster, the first principal component
-     * will be extracted and all points will be projected onto this principal component. The values of the projected
-     * points will be sorted in ascending order and the first and last points will be extracted as entry points,
-     * as well as start and end points, for AllStar.
-     * @param points Collection of points (cluster) for which the entry points shall be determined.
-     * @param pc First prinicpal component of the PCA for a cluster.
-     * @return Entry points for a cluster.
-     */
-    static Tuple<Point, Point> findEntryPoints(Collection<Point> points, RealVector pc) {
-        // Red-Black tree as implemented in TreeMap is more efficient than skip list
-        SortedMap<Double, Point> projectionMap = new TreeMap<>();
-
-        // Project all points from cluster to the first principal component
-        for (Point p : points) {
-            RealVector v = new ArrayRealVector(p.getCoordinates());
-            double projection = PCA.getProjection(v, pc);
-            projectionMap.put(projection, p);
-        }
-
-        Point start = projectionMap.get(projectionMap.firstKey());
-        Point goal = projectionMap.get(projectionMap.lastKey());
-
-        assert(points.contains(start));
-        assert(points.contains(goal));
-
-        return new Tuple<>(start, goal);
     }
 }

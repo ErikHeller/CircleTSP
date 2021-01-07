@@ -1,5 +1,8 @@
-package CircleTSP.algo;
+package CircleTSP.algo.path;
 
+import CircleTSP.algo.cluster.PCA;
+import CircleTSP.algo.path.AllStar;
+import CircleTSP.algo.path.AllStar2;
 import CircleTSP.entities.Point;
 import CircleTSP.entities.Tuple;
 import CircleTSP.util.Distance;

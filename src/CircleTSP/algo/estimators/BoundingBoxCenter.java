@@ -1,10 +1,10 @@
-package CircleTSP.algo;
+package CircleTSP.algo.estimators;
 
 import CircleTSP.entities.Point;
 
 import java.util.Collection;
 
-public class BoundingBoxCenterEstimator implements CenterpointEstimator {
+public class BoundingBoxCenter implements CenterpointEstimator {
 
     /**
      * Find a center point for a collection of points, by generating a bounding box based on all points and calculating

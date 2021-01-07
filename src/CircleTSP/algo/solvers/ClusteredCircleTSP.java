@@ -1,5 +1,8 @@
-package CircleTSP.algo;
+package CircleTSP.algo.solvers;
 
+import CircleTSP.algo.cluster.DBSCAN;
+import CircleTSP.algo.estimators.EntrypointHeuristic;
+import CircleTSP.algo.estimators.IntersectingEdges;
 import CircleTSP.entities.*;
 
 import java.util.*;

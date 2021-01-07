@@ -1,4 +1,4 @@
-package CircleTSP.algo;
+package CircleTSP.algo.cluster;
 
 import CircleTSP.entities.Cluster;
 import CircleTSP.util.Distance;

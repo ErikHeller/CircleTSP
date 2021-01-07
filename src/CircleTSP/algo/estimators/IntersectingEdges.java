@@ -1,4 +1,4 @@
-package CircleTSP.algo;
+package CircleTSP.algo.estimators;
 
 import CircleTSP.entities.*;
 import CircleTSP.util.Distance;

@@ -1,9 +1,13 @@
-package CircleTSP.algo;
+package CircleTSP.algo.solvers;
 
+import CircleTSP.algo.cluster.DBSCAN;
+import CircleTSP.algo.cluster.PCA;
+import CircleTSP.algo.estimators.EntrypointHeuristic;
+import CircleTSP.algo.estimators.IntersectingEdges;
+import CircleTSP.algo.path.LinearPath;
 import CircleTSP.entities.*;
 import CircleTSP.util.Distance;
 import org.apache.commons.math3.linear.RealVector;
-import org.apache.commons.math3.linear.ArrayRealVector;
 
 import java.util.*;
 
