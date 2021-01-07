@@ -71,7 +71,8 @@ public class PCA {
         // Power iteration would be a faster PCA method
 
         // Get mean average for normalization
-        Point mean = CircleTSP.averageCenter(points);
+        CenterpointEstimator centerEstimator = new AverageCenterEstimator();
+        Point mean = centerEstimator.estimateCenter(points);
 
         int numPoints = points.size();
         double[][] pointsArray = new double[numPoints][Point.getDIMENSIONS()];

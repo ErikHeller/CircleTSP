@@ -10,47 +10,6 @@ import java.util.*;
  * Created by Erik Heller on 13.11.2018.
  */
 public class CircleTSP implements TSPSolver {
-    /**
-     * Find a center point for a collection of points, by generating a bounding box based on all points and calculating
-     * the center of this bounding box.
-     * @param points Collection of points for which a center point shall be found.
-     * @return Bounding box center point of the points collection.
-     */
-    private static Point boundingBoxCenter(Collection<Point> points) {
-        // Step 1: Create bounding box for points
-        // Alternative: bucketsort & dequeue?
-        double minX = 0, minY = 0, maxX = 0, maxY = 0;
-
-        for (Point p : points) {
-            double x = p.getCoordinates()[0];
-            double y = p.getCoordinates()[1];
-
-            if (x < minX) minX = x;
-            else if (x > maxX) maxX = x;
-            if (y < minY) minY = y;
-            else if (y > maxY) maxY = y;
-        }
-
-        // Step 2: Find center
-        return new Point("center", new double[]{(maxX + minX)/2, (maxY + minY)/2});
-    }
-
-    /**
-     * Find a center point for a collection of points, by calculating the mean average of the coordinates of all points.
-     * @param points Collection of points for which a center point shall be found.
-     * @return Mean average center point of the points collection.
-     */
-    static Point averageCenter(Collection<Point> points) {
-        double x = 0.0, y = 0.0;
-        for (Point p : points) {
-            x += p.getCoordinates()[0];
-            y += p.getCoordinates()[1];
-        }
-        x = x / points.size();
-        y = y / points.size();
-
-        return new Point("center", new double[]{x, y});
-    }
 
     /** Projects a point in a two dimensional euclidean space onto a point of the unit circle
      * and calculates the angle of that point on the unit circle in degrees.
@@ -126,6 +85,7 @@ public class CircleTSP implements TSPSolver {
     }
 
     public static Point getCenterPoint(Collection<Point> points) {
-        return averageCenter(points);
+        CenterpointEstimator centerEstimator = new AverageCenterEstimator();
+        return centerEstimator.estimateCenter(points);
     }
 }
