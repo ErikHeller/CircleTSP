@@ -1,4 +1,4 @@
-package CircleTSP.algo;
+package CircleTSP.algo.sorting;
 
 import CircleTSP.entities.Point;
 
@@ -6,19 +6,23 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Sorting {
+public class BucketSort implements PointSorter {
 
-	public static List<Point> bucketSort(List<Point> points) {
+	@Override
+	public List<Point> sort(List<Point> points) {
 		int length = (int) Math.ceil(((double)points.size()) / 4.0);
-		return bucketSort(points, length, 1);
+		return sort(points, length, 1);
 	}
 
-    public static List<Point> bucketSort(final List<Point> points, int length) {
-    	return bucketSort(points, length, 1);
+    public List<Point> sort(final List<Point> points, int numBuckets) {
+    	return sort(points, numBuckets, 1);
 	}
 
-	// Reference 1
-	public static List<Point> bucketSort(final List<Point> points, final int numBuckets, final int numThreads) {
+	// Reference:https://reader.uni-mainz.de/WiSe2016-17/08-079-060-00/Lists/DocumentLib/Vorlesungsfolien/03_randomisierung_ann.pdf
+	public List<Point> sort(final List<Point> points, final int numBuckets, final int numThreads) {
+		PointSorter insertionSort = new InsertionSort();
+		PointSorter mergeSort = new MergeSort();
+
     	if (numBuckets < 1)
     		throw new IllegalArgumentException("Length can't be 0");
 
@@ -52,9 +56,9 @@ public class Sorting {
 						if (currentBucket.size() <= 1)
 						    continue;
 						if (currentBucket.size() < 20)
-							buckets.set(bucketIndex, insertionSort(currentBucket));
+							buckets.set(bucketIndex, insertionSort.sort(currentBucket));
 						else
-                            buckets.set(bucketIndex, mergeSort(currentBucket));
+                            buckets.set(bucketIndex, mergeSort.sort(currentBucket));
 					}
 				});
 				threads[threadID].start();
@@ -77,32 +81,4 @@ public class Sorting {
 		}
 		return result;
 	}
-
-	// Collection.sort() uses a variant of MergeSort
-	private static List<Point> mergeSort(final List<Point> sort) {
-    	sort.sort((p1, p2) -> (int) Math.signum(p1.getAngle() - p2.getAngle()));
-    	return sort;
-	}
-
-	// Taken from Reference 2, rewritten to match Types, ignoring cases with
-	// Length 0 and 1
-	private static List<Point> insertionSort(final List<Point> sort) {
-		if (sort.size() > 1) {
-			Point temp;
-			for (int i = 1; i < sort.size(); i++) {
-				temp = sort.get(i);
-				int j = i;
-				while (j > 0 && sort.get(j - 1).getAngle() > temp.getAngle()) {
-					sort.set(j, sort.get(j - 1));
-					j--;
-				}
-				sort.set(j, temp);
-			}
-		}
-		return sort;
-	}
 }
-
-// Reference 1:
-// https://reader.uni-mainz.de/WiSe2016-17/08-079-060-00/Lists/DocumentLib/Vorlesungsfolien/03_randomisierung_ann.pdf
-// Reference 2: http://www.java-programmieren.com/insertionsort-java.php

@@ -1,5 +1,6 @@
-package CircleTSP.algo;
+package CircleTSP.algo.sorting;
 
+import CircleTSP.algo.sorting.BucketSort;
 import CircleTSP.entities.Point;
 
 import java.util.LinkedList;
@@ -11,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Created by Erik Heller on 08.09.2019.
  */
-class SortingTest {
+class BucketSortTest {
 
     private static int N = 10000;
     private List<Point> points;
@@ -31,19 +32,21 @@ class SortingTest {
 
     @org.junit.jupiter.api.Test
     void testBucketSort() {
-        List<Point> sortedPoints = Sorting.bucketSort(points, 10);
+        BucketSort bucketSort = new BucketSort();
+        List<Point> sortedPoints = bucketSort.sort(points, 10);
         boolean isSorted = checkSorted(sortedPoints);
         assertTrue(isSorted);
     }
 
     @org.junit.jupiter.api.Test
     void testLessPointsThanLength() {
+        BucketSort bucketSort = new BucketSort();
         List<Point> threePoints = new LinkedList<>(points.subList(0,2));
-        List<Point> sortedPoints = Sorting.bucketSort(threePoints);
+        List<Point> sortedPoints = bucketSort.sort(threePoints);
         boolean isSorted = checkSorted(sortedPoints);
         assertTrue(isSorted);
 
-        assertThrows(IllegalArgumentException.class, () -> Sorting.bucketSort(points, 0));
+        assertThrows(IllegalArgumentException.class, () -> bucketSort.sort(points, 0));
     }
 
     private boolean checkSorted(List<Point> points){

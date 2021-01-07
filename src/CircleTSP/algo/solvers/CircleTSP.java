@@ -2,7 +2,8 @@ package CircleTSP.algo.solvers;
 
 import CircleTSP.algo.estimators.AverageCenter;
 import CircleTSP.algo.estimators.CenterpointEstimator;
-import CircleTSP.algo.Sorting;
+import CircleTSP.algo.sorting.BucketSort;
+import CircleTSP.algo.sorting.PointSorter;
 import CircleTSP.entities.Point;
 import CircleTSP.entities.Tour;
 
@@ -82,9 +83,11 @@ public class CircleTSP implements TSPSolver {
         // Step 3: Sort points
         // TODO: Let user define startpoint
         // TODO: Evaluate if relative scaling performs better than absolute scaling by 360 degrees
+        PointSorter bucketSort = new BucketSort();
+
         for (Point p : points)
             p.setAngle(p.getAngle() / 360);
-        return new Tour(Sorting.bucketSort(new LinkedList<>(points)));
+        return new Tour(bucketSort.sort(new LinkedList<>(points)));
     }
 
     public static Point getCenterPoint(Collection<Point> points) {
